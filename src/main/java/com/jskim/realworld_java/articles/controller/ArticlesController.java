@@ -1,12 +1,15 @@
 package com.jskim.realworld_java.articles.controller;
 
-import com.jskim.realworld_java.articles.model.Articles;
+import com.jskim.realworld_java.articles.model.dto.Articles;
 import com.jskim.realworld_java.articles.service.ArticlesService;
-import com.jskim.realworld_java.articles.model.Article;
+import com.jskim.realworld_java.articles.model.dto.Article;
+import com.jskim.realworld_java.error.model.ErrorResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import static org.springframework.http.ResponseEntity.status;
 
 @RestController
 @RequestMapping("/api/articles")
@@ -16,77 +19,93 @@ public class ArticlesController {
     private ArticlesService articlesService;
 
     @GetMapping("")
-    private Articles getArticles( // favorited의 의미는?
+    private ResponseEntity<?> getArticles( // favorited의 의미는?
             @RequestParam String tag, @RequestParam String author,@RequestParam String favorited,
             @RequestParam String limit,@RequestParam String offset){
         try{
-            return articlesService.getArticles(tag,author,favorited,limit,offset);
+            return new ResponseEntity<>(articlesService.getArticles(tag,author,favorited,limit,offset), HttpStatus.OK);
         }catch (Exception ex){
-            return
+            ErrorResponse errorResponse = new ErrorResponse();
+            errorResponse.setBody(ex.getMessage());
+            return status(500).body(errorResponse.getBody());
         }
     }
 
     @GetMapping("/feed") // 인증이 필요한 기사를 받는다?, 최근 기사부터
-    private Articles getFeedArticles(
+    private ResponseEntity<?> getFeedArticles(
             @RequestParam String tag, @RequestParam String author,@RequestParam String favorited,
             @RequestParam String limit,@RequestParam String offset){
         try{
-            return articlesService.getArticles(tag,author,favorited,limit,offset);
+            return new ResponseEntity<>(articlesService.getArticles(tag,author,favorited,limit,offset), HttpStatus.OK);
         }catch (Exception ex){
-            return
+            ErrorResponse errorResponse = new ErrorResponse();
+            errorResponse.setBody(ex.getMessage());
+            return status(500).body(errorResponse.getBody());
         }
     }
     @GetMapping("/{slug}")
-    private Article getArticle(@PathVariable String slug){
+    private ResponseEntity<?> getArticle(@PathVariable String slug){
         try{
-            return articlesService.getArticle(slug);
+            return new ResponseEntity<>(articlesService.getArticle(slug), HttpStatus.OK);
         }catch (Exception ex){
-            return
+            ErrorResponse errorResponse = new ErrorResponse();
+            errorResponse.setBody(ex.getMessage());
+            return status(500).body(errorResponse.getBody());
         }
     }
 
     @PostMapping("")
-    private Article createArticle(Article article){
+    private ResponseEntity<?> createArticle(Article article){
         try{
-            return articlesService.createArticle(article);
+            return new ResponseEntity<>(articlesService.createArticle(article), HttpStatus.OK);
         }catch (Exception ex){
-            return
+            ErrorResponse errorResponse = new ErrorResponse();
+            errorResponse.setBody(ex.getMessage());
+            return status(500).body(errorResponse.getBody());
         }
     }
 
     @PutMapping("/{slug}")
-    private Article updateArticle(@PathVariable String slug,Article article){
+    private ResponseEntity<?> updateArticle(@PathVariable String slug,Article article){
         try{
-            return articlesService.updateArticle(slug,article);
+            return new ResponseEntity<>(articlesService.updateArticle(slug,article), HttpStatus.OK);
         }catch (Exception ex){
-            return
+            ErrorResponse errorResponse = new ErrorResponse();
+            errorResponse.setBody(ex.getMessage());
+            return status(500).body(errorResponse.getBody());
         }
     }
 
     @DeleteMapping("/{slug}") //인증된 사용자인걸 어찌 알까?
-    private Article deleteArticle(@PathVariable String slug){
+    private ResponseEntity<?> deleteArticle(@PathVariable String slug){
         try{
-            return articlesService.deleteArticle(slug);
+            return new ResponseEntity<>(articlesService.deleteArticle(slug), HttpStatus.OK);
         }catch (Exception ex){
-            return
+            ErrorResponse errorResponse = new ErrorResponse();
+            errorResponse.setBody(ex.getMessage());
+            return status(500).body(errorResponse.getBody());
         }
     }
 
     @PostMapping("/{slug}/favorite")
-    private Article favoriteArticle(@PathVariable String slug){
+    private ResponseEntity<?> favoriteArticle(@PathVariable String slug){
         try{
-            return articlesService.favoriteArticle(slug);
+            return new ResponseEntity<>(articlesService.favoriteArticle(slug), HttpStatus.OK);
         }catch (Exception ex){
-            return
+            ErrorResponse errorResponse = new ErrorResponse();
+            errorResponse.setBody(ex.getMessage());
+            return status(500).body(errorResponse.getBody());
         }
     }
 
     @DeleteMapping("/{slug}/favorite")
-    private Article unFavoriteArticle(@PathVariable String slug){
+    private ResponseEntity<?> unFavoriteArticle(@PathVariable String slug){
         try{
-            return articlesService.unFavoriteArticle(slug);
+            return new ResponseEntity<>(articlesService.unFavoriteArticle(slug), HttpStatus.OK);
         }catch (Exception ex){
-            return
+            ErrorResponse errorResponse = new ErrorResponse();
+            errorResponse.setBody(ex.getMessage());
+            return status(500).body(errorResponse.getBody());
         }
     }
 

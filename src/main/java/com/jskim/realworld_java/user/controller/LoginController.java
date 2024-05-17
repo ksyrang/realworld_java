@@ -1,10 +1,15 @@
 package com.jskim.realworld_java.user.controller;
 
-import com.jskim.realworld_java.user.model.Profile;
-import com.jskim.realworld_java.user.model.User;
+import com.jskim.realworld_java.error.model.ErrorResponse;
+import com.jskim.realworld_java.user.model.dto.Profile;
+import com.jskim.realworld_java.user.model.dto.User;
 import com.jskim.realworld_java.user.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import static org.springframework.http.ResponseEntity.status;
 
 @RestController
 public class LoginController {
@@ -13,65 +18,78 @@ public class LoginController {
     private LoginService loginService;
 
     @PostMapping("/api/users/login")
-    private String loginUser(String email, String password){
+    private ResponseEntity<?> loginUser(String email, String password){
         try{
-            return loginService.loginUser(user);
+            return new ResponseEntity<>(loginService.loginUser(email,password), HttpStatus.OK);
         }catch (Exception ex){
-            return
+            ErrorResponse errorResponse = new ErrorResponse();
+            errorResponse.setBody(ex.getMessage());
+            return status(401).body(errorResponse.getBody());
         }
     }
 
     @PostMapping("/api/users")
-    private User addUser(User user){
+    private ResponseEntity<?> addUser(User user){
         try{
-            return loginService.addUser(user);
+            return new ResponseEntity<>(loginService.addUser(user), HttpStatus.OK);
         }catch (Exception ex){
-            return
+            ErrorResponse errorResponse = new ErrorResponse();
+            errorResponse.setBody(ex.getMessage());
+            return status(500).body(errorResponse.getBody());
         }
     }
 
     @GetMapping("/api/user")
-    private User getUser (String email){
+    private ResponseEntity<?> getUser (String email){
         try{
-            return loginService.getUser(email);
+            return new ResponseEntity<>(loginService.getUser(email), HttpStatus.OK);
         }catch (Exception ex){
-            return
+            ErrorResponse errorResponse = new ErrorResponse();
+            errorResponse.setBody(ex.getMessage());
+            return status(500).body(errorResponse.getBody());
         }
     }
 
     @PutMapping("/api/user")
-    private User updateUser(User user){
+    private ResponseEntity<?> updateUser(User user){
         try{
-            return loginService.updateUser(user);
+            return new ResponseEntity<>(loginService.updateUser(user), HttpStatus.OK);
         }catch (Exception ex){
-            return
+            ErrorResponse errorResponse = new ErrorResponse();
+            errorResponse.setBody(ex.getMessage());
+            return status(500).body(errorResponse.getBody());
         }
     }
 
     @GetMapping("/api/profiles/{username}")
-    private Profile getProfile (@PathVariable String username){
+    private ResponseEntity<?> getProfile (@PathVariable String username){
         try{
-            return loginService.getProfile(username);
+            return new ResponseEntity<>(loginService.getProfile(username), HttpStatus.OK);
         }catch (Exception ex){
-            return
+            ErrorResponse errorResponse = new ErrorResponse();
+            errorResponse.setBody(ex.getMessage());
+            return status(500).body(errorResponse.getBody());
         }
     }
 
     @PostMapping("/api/profiles/{username}/follow")
-    private Profile followProfile (@PathVariable String username){
+    private ResponseEntity<?> followProfile (@PathVariable String username){
         try{
-            return loginService.followProfile(username);
+            return new ResponseEntity<>(loginService.followProfile(username), HttpStatus.OK);
         }catch (Exception ex){
-            return
+            ErrorResponse errorResponse = new ErrorResponse();
+            errorResponse.setBody(ex.getMessage());
+            return status(500).body(errorResponse.getBody());
         }
     }
     @DeleteMapping("/api/profiles/{username}/follow")
-    private Profile unfollowProfile (@PathVariable String username){
+    private ResponseEntity<?> unfollowProfile (@PathVariable String username){
         try{
-            return loginService.unfollowProfile(username);
+            return new ResponseEntity<>(loginService.unfollowProfile(username), HttpStatus.OK);
         }catch (Exception ex){
-            return
+            ErrorResponse errorResponse = new ErrorResponse();
+            errorResponse.setBody(ex.getMessage());
+            return status(500).body(errorResponse.getBody());
         }
     }
-
 }

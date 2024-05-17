@@ -1,13 +1,20 @@
-package com.jskim.realworld_java.articles.model;
+package com.jskim.realworld_java.articles.model.entity;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 @Data
-@NoArgsConstructor
-public class Article {
+@Builder
+@Entity
+@Table(name = "profile")
+public class EntityArticle {
+    @Id
     private String slug;
     private String title;
     private String description;
@@ -17,5 +24,5 @@ public class Article {
     private String updatedAt;
     private boolean favorited;
     private int favoritesCount;
-    private Author author;
+    private EntityAuthor entityAuthor;
 }

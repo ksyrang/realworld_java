@@ -1,11 +1,16 @@
 package com.jskim.realworld_java.articles.controller;
 
-import com.jskim.realworld_java.articles.model.Comment;
+import com.jskim.realworld_java.articles.model.dto.Comment;
 import com.jskim.realworld_java.articles.service.CommentService;
+import com.jskim.realworld_java.error.model.ErrorResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import static org.springframework.http.ResponseEntity.status;
 
 @RestController
 @RequestMapping("/api/articles/{slug}/comments") // 이게 되려나?
@@ -16,29 +21,36 @@ public class CommentController {
 
 
     @PostMapping("")
-    private Comment addComments (@PathVariable String slug, Comment comment){
+    private ResponseEntity<?> addComments (@PathVariable String slug, Comment comment){
         try{
-            return commentService.addComments(slug,comment);
+            return new ResponseEntity<>(commentService.addComments(slug,comment), HttpStatus.OK);
         }catch (Exception ex){
-            return
+            ErrorResponse errorResponse = new ErrorResponse();
+            errorResponse.setBody(ex.getMessage());
+            return status(500).body(errorResponse.getBody());
         }
     }
 
     @GetMapping("")
-    private List<Comment> getComments(@PathVariable String slug){
+    private ResponseEntity<?> getComments(@PathVariable String slug){
         try{
-            return commentService.getComments(slug);
+            return new ResponseEntity<>(commentService.getComments(slug), HttpStatus.OK);
         }catch (Exception ex){
-            return
+            ErrorResponse errorResponse = new ErrorResponse();
+            errorResponse.setBody(ex.getMessage());
+            return status(500).body(errorResponse.getBody());
         }
     }
 
     @DeleteMapping("/{id}")
-    private Comment deleteComment(@PathVariable String slug,@PathVariable String id){
+    public ResponseEntity<?> deleteComment(@PathVariable String slug,@PathVariable String id){
         try{
-            return commentService.getComments(slug,id);
+            return new ResponseEntity<>(commentService.deleteComments(slug,id), HttpStatus.OK);
         }catch (Exception ex){
-            return
+            ErrorResponse errorResponse = new ErrorResponse();
+            errorResponse.setBody(ex.getMessage());
+            return status(500).body(errorResponse.getBody());
         }
     }
+
 }

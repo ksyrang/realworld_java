@@ -1,6 +1,5 @@
-package com.jskim.realworld_java.articles.model;
+package com.jskim.realworld_java.articles.model.dto;
 
-import com.jskim.realworld_java.articles.model.Author;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

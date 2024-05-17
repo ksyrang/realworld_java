@@ -1,11 +1,11 @@
-package com.jskim.realworld_java.user.model;
+package com.jskim.realworld_java.articles.model.entity;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@NoArgsConstructor
 @Data
-public class Profile {
+@NoArgsConstructor
+public class EntityAuthor {
     private String username;
     private String bio;
     private String image;
